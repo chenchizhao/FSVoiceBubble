@@ -1,0 +1,1 @@
+PODS_FSVOICEBUBBLE_FSVOICEBUBBLE_OTHER_LDFLAGS = -framework "AVFoundation" -framework "QuartzCore" -framework "UIKit"

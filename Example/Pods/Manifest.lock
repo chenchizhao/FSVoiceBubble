@@ -1,5 +1,5 @@
 PODS:
-  - FSVoiceBubble (0.1.0)
+  - FSVoiceBubble (0.0.2)
 
 DEPENDENCIES:
   - FSVoiceBubble (from `../`)
@@ -9,6 +9,6 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  FSVoiceBubble: 5c683e8fbc5e1ee0a1ef4662579cc168fed1da63
+  FSVoiceBubble: 919a35b8747e7e0d04d3a1adee5f5884aa494ca4
 
 COCOAPODS: 0.36.3

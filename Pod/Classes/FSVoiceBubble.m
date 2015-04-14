@@ -30,7 +30,7 @@
 
 @implementation FSVoiceBubble
 
-@dynamic bubbleImage;
+@dynamic bubbleImage, textColor;
 
 - (instancetype)initWithCoder:(NSCoder *)coder
 {
@@ -54,14 +54,12 @@
 {
     self.backgroundColor = [UIColor clearColor];
     self.clipsToBounds = NO;
-    self.waveColor = [UIColor colorWithRed:0/255.0 green:102/255.0 blue:51/255.0 alpha:1.0];
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setImage:[UIImageNamed(@"fs_icon_wave_2") imageWithOverlayColor:self.waveColor]  forState:UIControlStateNormal];
     [button setBackgroundImage:UIImageNamed(@"fs_chat_bubble") forState:UIControlStateNormal];
     [button setTitle:@"0\"" forState:UIControlStateNormal];
-    [button setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(voiceClicked:) forControlEvents:UIControlEventTouchUpInside];
     button.backgroundColor                = [UIColor clearColor];
     button.titleLabel.font                = [UIFont systemFontOfSize:12];
@@ -73,6 +71,9 @@
     button.contentHorizontalAlignment     = UIControlContentHorizontalAlignmentRight;
     [self addSubview:button];
     self.contentButton = button;
+    
+    self.waveColor = [UIColor colorWithRed:0/255.0 green:102/255.0 blue:51/255.0 alpha:1.0];
+    self.textColor = [UIColor grayColor];
     
     _animatingWaveColor = [UIColor whiteColor];
     _exclusive = YES;
@@ -116,11 +117,6 @@
 
 # pragma mark - Setter & Getter
 
-- (void)setTintColor:(UIColor *)tintColor
-{
-    [super setTintColor:tintColor];
-}
-
 - (void)setWaveColor:(UIColor *)waveColor
 {
     if (![_waveColor isEqual:waveColor]) {
@@ -140,6 +136,16 @@
 - (void)setBubbleImage:(UIImage *)bubbleImage
 {
     [_contentButton setBackgroundImage:bubbleImage forState:UIControlStateNormal];
+}
+
+- (void)setTextColor:(UIColor *)textColor
+{
+    [_contentButton setTitleColor:textColor forState:UIControlStateNormal];
+}
+
+- (UIColor *)textColor
+{
+    return [_contentButton titleColorForState:UIControlStateNormal];
 }
 
 - (UIImage *)bubbleImage

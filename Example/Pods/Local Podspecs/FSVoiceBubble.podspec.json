@@ -1,16 +1,15 @@
 {
   "name": "FSVoiceBubble",
-  "version": "0.1.0",
-  "summary": "A short description of FSVoiceBubble.",
-  "description": "                       An optional longer description of FSVoiceBubble\n\n                       * Markdown format.\n                       * Don't worry about the indent, we strip it!\n",
-  "homepage": "https://github.com/<GITHUB_USERNAME>/FSVoiceBubble",
+  "version": "0.0.2",
+  "summary": "A small light-weight voice/audio bubble",
+  "homepage": "https://github.com/f33chobits/FSVoiceBubble",
   "license": "MIT",
   "authors": {
-    "f33chobits": "="
+    "f33chobits": "Wenchao Ding"
   },
   "source": {
-    "git": "https://github.com/<GITHUB_USERNAME>/FSVoiceBubble.git",
-    "tag": "0.1.0"
+    "git": "https://github.com/f33chobits/FSVoiceBubble.git",
+    "tag": "0.0.2"
   },
   "platforms": {
     "ios": "7.0"
@@ -21,5 +20,10 @@
     "FSVoiceBubble": [
       "Pod/Assets/*.png"
     ]
-  }
+  },
+  "frameworks": [
+    "UIKit",
+    "AVFoundation",
+    "QuartzCore"
+  ]
 }
