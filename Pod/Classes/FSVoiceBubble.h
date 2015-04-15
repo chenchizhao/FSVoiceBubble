@@ -30,6 +30,8 @@
 @property (assign, nonatomic) IBInspectable BOOL    invert;
 @property (assign, nonatomic) IBInspectable BOOL    exclusive;
 @property (assign, nonatomic) IBInspectable BOOL    durationInsideBubble;
+@property (assign, nonatomic) IBInspectable CGFloat waveInset;
+@property (assign, nonatomic) IBInspectable CGFloat textInset;
 @property (assign, nonatomic) IBOutlet id<FSVoiceBubbleDelegate> delegate;
 
 - (void)prepareToPlay;

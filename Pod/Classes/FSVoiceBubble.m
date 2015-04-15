@@ -97,12 +97,12 @@
         NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:14]};
         NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:[_contentButton titleForState:UIControlStateNormal] attributes:attributes];
         _contentButton.imageEdgeInsets = UIEdgeInsetsMake(0,
-                                                          -self.bounds.size.width + 50,
+                                                          -self.bounds.size.width + 50 + _waveInset,
                                                           0,
-                                                          self.bounds.size.width - 50);
+                                                          self.bounds.size.width - 50 + 25 - attributedString.size.width - _waveInset);
         NSInteger textPadding = _invert ? 2 : 4;
         if (_durationInsideBubble) {
-            _contentButton.titleEdgeInsets = UIEdgeInsetsMake(1, -8, 0, 8);
+            _contentButton.titleEdgeInsets = UIEdgeInsetsMake(1, -8-_textInset, 0, 8+_textInset);
         } else {
             _contentButton.titleEdgeInsets = UIEdgeInsetsMake(self.bounds.size.height - attributedString.size.height,
                                                     attributedString.size.width + textPadding,
@@ -153,6 +153,39 @@
     return [_contentButton backgroundImageForState:UIControlStateNormal];
 }
 
+- (void)setWaveInset:(CGFloat)waveInset
+{
+    if (_waveInset != waveInset) {
+        _waveInset = waveInset;
+        [self setNeedsLayout];
+    }
+}
+
+- (void)setTextInset:(CGFloat)textInset
+{
+    if (_textInset != textInset) {
+        _textInset = textInset;
+        [self setNeedsLayout];
+    }
+}
+
+- (void)setContentURL:(NSURL *)contentURL
+{
+    if (![_contentURL isEqual:contentURL]) {
+        _contentURL = contentURL;
+        _asset = [[AVURLAsset alloc] initWithURL:_contentURL options:nil];
+        CMTime duration = _asset.duration;
+        NSInteger seconds = CMTimeGetSeconds(duration);
+        NSError *error;
+        if (seconds > 60) {
+            error = [NSError errorWithDomain:@"A voice audio should't last longer than 60 seconds" code:300 userInfo:nil];
+        }
+        NSString *title = [NSString stringWithFormat:@"%@\"",@(seconds)];
+        [_contentButton setTitle:title forState:UIControlStateNormal];
+        [self setNeedsLayout];
+    }
+}
+
 #pragma mark - AVAudioPlayer Delegate
 
 - (void)audioPlayerBeginInterruption:(AVAudioPlayer *)player
@@ -197,29 +230,6 @@
 }
 
 #pragma mark - Public
-
-- (void)setContentURL:(NSURL *)contentURL
-{
-    if (![_contentURL isEqual:contentURL]) {
-        _contentURL = contentURL;
-        _asset = [[AVURLAsset alloc] initWithURL:_contentURL options:nil];
-        CMTime duration = _asset.duration;
-        NSInteger seconds = CMTimeGetSeconds(duration);
-        NSError *error;
-        if (seconds > 60) {
-            error = [NSError errorWithDomain:@"A voice audio should't last longer than 60 seconds" code:300 userInfo:nil];
-        }
-        NSString *title = [NSString stringWithFormat:@"%@\"",@(seconds)];
-        [_contentButton setTitle:title forState:UIControlStateNormal];
-        NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:14]};
-        CGFloat titleWidth = [[[NSAttributedString alloc] initWithString:title attributes:attributes] size].width;
-
-        _contentButton.titleEdgeInsets = UIEdgeInsetsMake(0,
-                                                self.bounds.size.width - 5 - [_contentButton imageForState:UIControlStateNormal].size.width - titleWidth - 2.5,
-                                                0,
-                                                0);
-    }
-}
 
 - (void)prepareToPlay
 {

@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.version          = "0.0.2"
   s.summary          = "A small light-weight voice/audio bubble"
   s.homepage         = "https://github.com/f33chobits/FSVoiceBubble"
-  # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
+  s.screenshots     = "https://cloud.githubusercontent.com/assets/5186464/6996648/791ff52a-dbc6-11e4-9d93-c184f1b9b0f9.png", "https://cloud.githubusercontent.com/assets/5186464/6996650/8475bb8a-dbc6-11e4-824c-fe1616f4e556.gif"
   s.license          = 'MIT'
   s.author           = { "f33chobits" => "Wenchao Ding" }
   s.source           = { :git => "https://github.com/f33chobits/FSVoiceBubble.git", :tag => s.version.to_s }
