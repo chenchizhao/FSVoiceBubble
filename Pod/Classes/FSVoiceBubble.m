@@ -24,7 +24,6 @@
 - (void)initialize;
 - (void)voiceClicked:(id)sender;
 - (void)bubbleShouldStop:(NSNotification *)notification;
-- (void)showError:(NSString *)error;
 
 @end
 
@@ -181,9 +180,11 @@
             _asset = [[AVURLAsset alloc] initWithURL:contentURL options:@{AVURLAssetPreferPreciseDurationAndTimingKey: @YES}];
             CMTime duration = _asset.duration;
             NSInteger seconds = CMTimeGetSeconds(duration);
-            NSError *error;
             if (seconds > 60) {
-                error = [NSError errorWithDomain:@"A voice audio should't last longer than 60 seconds" code:300 userInfo:nil];
+                NSLog(@"A voice audio should't last longer than 60 seconds");
+                _contentURL = nil;
+                _asset = nil;
+                return;
             }
             NSData *data = [NSData dataWithContentsOfURL:contentURL];
             _player = [[AVAudioPlayer alloc] initWithData:data error:NULL];
@@ -270,7 +271,7 @@
 - (void)play
 {
     if (!_contentURL) {
-        [self showError:@"ContentURL of voice bubble was not set"];
+        NSLog(@"ContentURL of voice bubble was not set");
         return;
     }
     if (!_player.playing) {
@@ -294,13 +295,6 @@
         _player.currentTime = 0;
         [self stopAnimating];
     }
-}
-
-#pragma mark - Private
-
-- (void)showError:(NSString *)error
-{
-    NSLog(@"FSVoiceBubble Error: %@",error);
 }
 
 @end

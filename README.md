@@ -5,7 +5,7 @@
 [![Platform](https://img.shields.io/cocoapods/p/FSVoiceBubble.svg?style=flat)](http://cocoapods.org/pods/FSVoiceBubble)
 
 A short light-weight voice bubble to let you: <br/>
-1. Play a short audio<br/>
+1. Play a short audio (online supported)<br/>
 2. Show wave effect while playing<br/>
 3. Customize your own style(wave color、bubble image .etc)<br/>
 
@@ -17,6 +17,19 @@ A short light-weight voice bubble to let you: <br/>
 ### A Colorful Example
 ![fsvoicebubble-style](https://cloud.githubusercontent.com/assets/5186464/6996650/8475bb8a-dbc6-11e4-824c-fe1616f4e556.gif)
 ###
+
+## Version notes
+
+### Version 0.1.0
+* Add download-and-play support(caching will be supported later)
+* Optimize loading speed
+* Bug fix
+
+### Version 0.0.2
+* Add textInset and waveInset
+
+### Version 0.0.1
+* Initial Release
 
 ## Installation
 

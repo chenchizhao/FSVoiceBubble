@@ -9,6 +9,6 @@
 // FSVoiceBubble
 #define COCOAPODS_POD_AVAILABLE_FSVoiceBubble
 #define COCOAPODS_VERSION_MAJOR_FSVoiceBubble 0
-#define COCOAPODS_VERSION_MINOR_FSVoiceBubble 0
-#define COCOAPODS_VERSION_PATCH_FSVoiceBubble 2
+#define COCOAPODS_VERSION_MINOR_FSVoiceBubble 1
+#define COCOAPODS_VERSION_PATCH_FSVoiceBubble 0
 
