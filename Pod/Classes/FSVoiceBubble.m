@@ -173,21 +173,35 @@
 {
     if (![_contentURL isEqual:contentURL]) {
         _contentURL = contentURL;
+        if (self.isPlaying) {
+            [self stop];
+        }
+        _contentButton.enabled = NO;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            _asset = [[AVURLAsset alloc] initWithURL:_contentURL options:nil];
+            _asset = [[AVURLAsset alloc] initWithURL:contentURL options:@{AVURLAssetPreferPreciseDurationAndTimingKey: @YES}];
             CMTime duration = _asset.duration;
             NSInteger seconds = CMTimeGetSeconds(duration);
             NSError *error;
             if (seconds > 60) {
                 error = [NSError errorWithDomain:@"A voice audio should't last longer than 60 seconds" code:300 userInfo:nil];
             }
+            NSData *data = [NSData dataWithContentsOfURL:contentURL];
+            _player = [[AVAudioPlayer alloc] initWithData:data error:NULL];
+            _player.delegate = self;
+            [_player prepareToPlay];
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSString *title = [NSString stringWithFormat:@"%@\"",@(seconds)];
                 [_contentButton setTitle:title forState:UIControlStateNormal];
+                _contentButton.enabled = YES;
                 [self setNeedsLayout];
             });
         });
     }
+}
+
+- (BOOL)isPlaying
+{
+    return _player.isPlaying;
 }
 
 #pragma mark - AVAudioPlayer Delegate
@@ -235,25 +249,6 @@
 
 #pragma mark - Public
 
-- (void)prepareToPlay
-{
-    if (!_contentURL) {
-        [self showError:@"ContentURL of voice bubble was not set"];
-        return;
-    }
-    if (!_player) {
-        [_player stop];
-        _player = nil;
-    }
-    NSError *error;
-    _player = [[AVAudioPlayer alloc] initWithContentsOfURL:_contentURL error:&error];
-    _player.delegate = self;
-    [_player prepareToPlay];
-    if (error) {
-        [self showError:error.localizedDescription];
-    }
-}
-
 - (void)startAnimating
 {
     if (!_contentButton.imageView.isAnimating) {
@@ -277,9 +272,6 @@
     if (!_contentURL) {
         [self showError:@"ContentURL of voice bubble was not set"];
         return;
-    }
-    if (!_player) {
-        [self prepareToPlay];
     }
     if (!_player.playing) {
         [_player play];

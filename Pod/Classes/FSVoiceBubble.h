@@ -34,7 +34,8 @@
 @property (assign, nonatomic) IBInspectable CGFloat textInset;
 @property (assign, nonatomic) IBOutlet id<FSVoiceBubbleDelegate> delegate;
 
-- (void)prepareToPlay;
+@property (readonly, getter=isPlaying) BOOL playing;
+
 - (void)play;
 - (void)pause;
 - (void)stop;
