@@ -173,16 +173,20 @@
 {
     if (![_contentURL isEqual:contentURL]) {
         _contentURL = contentURL;
-        _asset = [[AVURLAsset alloc] initWithURL:_contentURL options:nil];
-        CMTime duration = _asset.duration;
-        NSInteger seconds = CMTimeGetSeconds(duration);
-        NSError *error;
-        if (seconds > 60) {
-            error = [NSError errorWithDomain:@"A voice audio should't last longer than 60 seconds" code:300 userInfo:nil];
-        }
-        NSString *title = [NSString stringWithFormat:@"%@\"",@(seconds)];
-        [_contentButton setTitle:title forState:UIControlStateNormal];
-        [self setNeedsLayout];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            _asset = [[AVURLAsset alloc] initWithURL:_contentURL options:nil];
+            CMTime duration = _asset.duration;
+            NSInteger seconds = CMTimeGetSeconds(duration);
+            NSError *error;
+            if (seconds > 60) {
+                error = [NSError errorWithDomain:@"A voice audio should't last longer than 60 seconds" code:300 userInfo:nil];
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSString *title = [NSString stringWithFormat:@"%@\"",@(seconds)];
+                [_contentButton setTitle:title forState:UIControlStateNormal];
+                [self setNeedsLayout];
+            });
+        });
     }
 }
 
@@ -233,6 +237,10 @@
 
 - (void)prepareToPlay
 {
+    if (!_contentURL) {
+        [self showError:@"ContentURL of voice bubble was not set"];
+        return;
+    }
     if (!_player) {
         [_player stop];
         _player = nil;
@@ -266,6 +274,10 @@
 
 - (void)play
 {
+    if (!_contentURL) {
+        [self showError:@"ContentURL of voice bubble was not set"];
+        return;
+    }
     if (!_player) {
         [self prepareToPlay];
     }
@@ -296,7 +308,7 @@
 
 - (void)showError:(NSString *)error
 {
-    [[[UIAlertView alloc] initWithTitle:@"FSVoiceBubble" message:@"error" delegate:nil cancelButtonTitle:@"Got it!" otherButtonTitles:nil, nil] show];
+    NSLog(@"FSVoiceBubble Error: %@",error);
 }
 
 @end
